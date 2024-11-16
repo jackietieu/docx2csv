@@ -1,7 +1,6 @@
 import Papa from "papaparse";
-import mammoth from "mammoth";
-
 import "./App.css";
+import mammoth from "mammoth";
 
 function App() {
   const handleFileUpload = async (
@@ -83,28 +82,27 @@ function parseText(text: string) {
 
   lines.forEach((line) => {
     if (!!line.match(/^(Abstract )?#\d+/)) {
-      entryData["Abstract Number"] = line.replace("Abstract #", "").trim();
+      entryData["Abstract Number"] = line
+        .replace("Abstract ", "")
+        .replace("#", "")
+        .trim();
     } else if (line.startsWith("Subheading:")) {
       entryData["Subheading"] = line.replace("Subheading:", "").trim();
     } else if (line.startsWith("Title:")) {
       entryData["Title"] = line.replace("Title:", "").trim();
     } else if (line.startsWith("First Author:")) {
-      const match = line.match(/First Author: (.*) \((male|female)\),.*,(.*)/);
+      const match = line.match(/First Author: (.*) \((male|female)\).*,(.*)/);
       if (match) {
         entryData["First Author Name"] = match[1].trim();
         entryData["First Author Gender"] = match[2];
-        entryData["First Author Affiliation"] = match[3]
-          .split(" ")
-          .pop() as string;
+        entryData["First Author Affiliation"] = match[3];
       }
     } else if (line.startsWith("Last Author:")) {
-      const match = line.match(/Last Author: (.*) \((male|female)\),.*,(.*)/);
+      const match = line.match(/Last Author: (.*) \((male|female)\).*,(.*)/);
       if (match) {
         entryData["Last Author Name"] = match[1].trim();
         entryData["Last Author Gender"] = match[2];
-        entryData["Last Author Affiliation"] = match[3]
-          .split(" ")
-          .pop() as string;
+        entryData["Last Author Affiliation"] = match[3];
       }
     }
 
